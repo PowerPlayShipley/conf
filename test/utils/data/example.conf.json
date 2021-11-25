@@ -1,0 +1,32 @@
+{
+  "players": {
+    "AA": {
+      "name": "Ade"
+    }
+  },
+  "fines": {
+    "H": {
+      "name": "Hanging",
+      "cost": 50
+    },
+    "D": {
+      "name": "Diagonal",
+      "cost": 50
+    },
+    "C": {
+      "name": "Captains",
+      "cost": 50
+    },
+    "R": {
+      "name": "Reverse",
+      "cost": 50
+    },
+    "G": {
+      "name": "Gutter",
+      "cost": 100
+    }
+  },
+  "meta": {
+    "max": 500
+  }
+}

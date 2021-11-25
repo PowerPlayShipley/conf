@@ -1,0 +1,220 @@
+openapi: "3.0.0"
+
+info:
+  version: 0.0.1
+  title: Powerplay Configuration
+  license:
+    name: MIT
+
+servers:
+  - url: http://localhost/-/api/v0/conf/
+  - url: http://api.powerplayfines.co.uk/v0/conf/
+
+paths:
+  /conf:
+    post:
+      summary: Create new configuration
+      operationId: createConfig
+      tags:
+        - configs
+      requestBody:
+        description: Configuration to add to storage
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Config"
+      responses:
+        '201':
+          description: Created Configuration
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: "#/components/schemas/Meta"
+                  data:
+                    $ref: "#/components/schemas/Config"
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                  error:
+                    $ref: "#/components/schemas/Error"
+  /conf/{id}:
+    get:
+      description: Returns a config based on a single ID
+      operationId: getConfigWithId
+      tags:
+        - configs
+      parameters:
+        - name: id
+          in: path
+          description: ID of the config to fetch
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Created Configuration
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: "#/components/schemas/Meta"
+                  data:
+                    $ref: "#/components/schemas/Config"
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                  error:
+                    $ref: "#/components/schemas/Error"
+    patch:
+      description: Update a single config based on the ID passed
+      operationId: updateConfig
+      tags:
+        - configs
+      parameters:
+        - name: id
+          in: path
+          description: ID of the config to fetch
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: JSON Patch with updates for configuration
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchBody"
+      responses:
+        '200':
+          description: Updated configuration
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: "#/components/schemas/Meta"
+                  data:
+                    $ref: "#/components/schemas/Config"
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                  error:
+                    $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    Config:
+      type: object
+      required:
+        - players
+        - meta
+      properties:
+        players:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              name:
+                type: string
+                default: "John Smith"
+        fines:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              name:
+                type: string
+                default: "Hanging"
+              cost:
+                type: number
+                default: 100
+        meta:
+          type: object
+          properties:
+            max:
+              type: integer
+            personalBests:
+              type: integer
+    Meta:
+      type: object
+      required:
+        - status
+        - requestId
+      properties:
+        status:
+          type: number
+        id:
+          type: string
+        requestId:
+          type: string
+    Error:
+      type: object
+      required:
+        - name
+        - message
+      properties:
+        message:
+          type: string
+        name:
+          type: string
+        code:
+          type: string
+        underlyingError:
+          type: object
+        meta:
+          type: object
+    PatchBody:
+      type: array
+      items:
+        $ref: "#/components/schemas/PatchDocument"
+    PatchDocument:
+      type: object
+      description: A JSONPatch document as defined by RFC 6902
+      required:
+        - "op"
+        - "path"
+      properties:
+        op:
+          type: string
+          description: The operation to be performed
+          enum:
+            - "add"
+            - "remove"
+            - "replace"
+            - "move"
+            - "copy"
+            - "test"
+        path:
+          type: string
+          description: A JSON-Pointer
+        value:
+          type: object
+          description: The value to be used within the operations.
+        from:
+          type: string
+          description: A string containing a JSON Pointer value.
