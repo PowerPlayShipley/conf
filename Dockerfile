@@ -35,7 +35,7 @@ RUN printf "//registry.npmjs.org/:_authToken=${NPM_TOKEN}\n" >> .npmrc && \
 
 COPY ./src ./src
 COPY ./bin ./bin
-COPY ./conf ./conf
+COPY ./schema ./schema
 
 # Remove all unwanted dependancies
 # and audit the modules to check for
@@ -70,7 +70,7 @@ WORKDIR $HOME
 COPY --from=build ./src/build/package*.json ./
 COPY --from=build ./src/build/src src
 COPY --from=build ./src/build/bin bin
-COPY --from=build ./src/build/conf conf
+COPY --from=build ./src/build/schema schema
 COPY --from=build ./src/build/node_modules node_modules
 
 USER node
