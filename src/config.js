@@ -27,7 +27,7 @@ const defaults = {
   cors: '*',
   date: buildDate,
   'database-collection': 'conf',
-  'database-uri': 'localhost:27017',
+  'database-uri': 'localhost:27017/conf',
   loglevel: 'info',
   name,
   proxy: true,
