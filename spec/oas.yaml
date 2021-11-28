@@ -1,14 +1,14 @@
-openapi: "3.0.0"
+openapi: 3.0.0
 
 info:
   version: 0.0.1
-  title: Powerplay Configuration
+  title: Powerplay Configuration Service
   license:
     name: MIT
 
 servers:
   - url: http://localhost/-/api/v0/conf/
-  - url: http://api.powerplayfines.co.uk/v0/conf/
+  - url: https://api.powerplayfines.co.uk/v0/conf/
 
 paths:
   /conf:
